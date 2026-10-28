@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>연애심리학 자가검사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 연분홍 바탕의 단일 세로 열. 처음 화면에서 검사 선택 → 애착(스크롤형 10문항) / 삼각형(한 화면 한 문항 27문항) */
+:root{
+  --red:#E04445; --pink:#FFE3DB; --peach:#FFF0DC; --lav:#EEE8FB; --lav-ink:#8B6FD6; --grey:#F1EFEF; --grey-ink:#5E5E5E; --peach-ink:#E07A5F;
+  --bg:#FFF6F3; --surface:#FFFFFF; --ink:#3B2A2B; --muted:#8A7473; --line:#F3D6CF;
+  --font-display:"Jua","Gowun Dodum","Apple SD Gothic Neo",sans-serif;
+  --font-body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:520px;margin:0 auto;padding-block:26px 48px;box-sizing:border-box}
+section{display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--font-display);font-weight:400;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:2rem;line-height:1.25}
+h2{font-size:1.45rem;line-height:1.3}
+h3{font-size:1.15rem}
+p{margin:0}
+.eyebrow{font-family:var(--font-display);font-size:.9rem;letter-spacing:.04em;color:var(--red)}
+.muted{color:var(--muted);font-size:.92rem}
+.head{display:flex;flex-direction:column;gap:6px}
+.note{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.btn{appearance:none;border:0;border-radius:999px;padding:15px 20px;font:1.05rem var(--font-display);cursor:pointer;background:var(--red);color:#fff;width:100%;box-shadow:0 3px 0 #b8302f}
+.btn:disabled{background:#E9C9C4;box-shadow:none;cursor:default;color:#fff}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.btns{display:flex;flex-direction:column;gap:10px}
+button:focus-visible,.pick:focus-visible{outline:3px solid var(--lav-ink);outline-offset:2px}
+.heart{display:inline-block;color:var(--red)}
+
+/* 처음 화면 */
+.hero{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.hearts{display:flex;gap:6px}
+.pick{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;font:inherit;color:inherit}
+.pick .num{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font:1.3rem var(--font-display);color:#fff}
+.pick .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pick .ttl{font:1.2rem var(--font-display)}
+.pick .done{flex:none;font:.8rem var(--font-display);color:var(--red);background:var(--pink);padding:3px 10px;border-radius:99px}
+
+/* 애착: 스크롤형 문항 */
+.qs{display:flex;flex-direction:column;gap:14px}
+.q{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.q.ok{border-color:#F4B8AE}
+.q p{font-size:1.02rem}
+.q .n{font-family:var(--font-display);color:var(--red);margin-right:4px}
+.five{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.five button,.nine button{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;font:1.05rem var(--font-display);cursor:pointer;padding:10px 0;font-variant-numeric:tabular-nums}
+.five button.on,.nine button.on{background:var(--red);border-color:var(--red);color:#fff}
+.ends{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:-6px}
+.sticky{position:sticky;bottom:0;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+
+/* 애착 결과 */
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.numbox{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.numbox b{font:2rem var(--font-display);font-variant-numeric:tabular-nums}
+.plot{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:10px}
+.plot svg{display:block;width:100%;height:auto}
+.border{background:var(--peach);border-radius:14px;padding:12px 14px;font-size:.93rem}
+.card{border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.card .tname{font:1.6rem var(--font-display)}
+.card .quote{font:1.05rem var(--font-display);opacity:.9}
+.card dl{margin:0;display:flex;flex-direction:column;gap:10px}
+.card dt{font:.95rem var(--font-display)}
+.card dd{margin:0;color:var(--ink);font-size:.97rem}
+.fine{font-size:.82rem;color:var(--muted);display:flex;flex-direction:column;gap:6px;border-top:1.5px dashed var(--line);padding-top:14px}
+
+/* 삼각형 */
+.progress{display:flex;align-items:center;gap:12px;font-variant-numeric:tabular-nums;font-size:.85rem;color:var(--muted)}
+.bar{flex:1;height:8px;background:var(--pink);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--red);width:0;transition:width .25s}
+.item{font-family:var(--font-display);font-size:1.35rem;line-height:1.55;min-height:6.2em;display:flex;align-items:center}
+.nine{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.nine button{padding:12px 0;border-radius:10px}
+.linkbtn{background:none;border:0;color:var(--muted);font:.92rem var(--font-body);padding:8px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;align-self:flex-start}
+.linkbtn:disabled{opacity:.35;cursor:default}
+.scores{display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:18px}
+.score{display:grid;grid-template-columns:3.6em 1fr 2.8em;align-items:center;gap:10px}
+.score .track{height:14px;background:var(--grey);border-radius:7px;overflow:hidden}
+.score .fill{height:100%;border-radius:7px}
+.score span{text-align:right;font:1.05rem var(--font-display);font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:.82rem;padding:3px 11px;border-radius:99px;background:var(--grey);color:var(--grey-ink)}
+.types{display:flex;flex-direction:column;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:4px 16px}
+.types div{display:grid;grid-template-columns:7.2em 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.types div:last-child{border-bottom:0}
+.types div.me{color:var(--red);font-family:var(--font-display);font-size:1rem}
+@media (prefers-reduced-motion: reduce){.bar i{transition:none}}
+</style>
+<style>[hidden]{display:none!important}body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- ========== 처음 화면 ========== -->
+<section id="home">
+  <div class="hero">
+    <div class="hearts" aria-hidden="true">
+      <svg width="26" height="24" viewBox="0 0 24 22"><path fill="var(--red)" d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 4.5 6.5 4.5c2.2 0 3.6 1.2 5.5 3.2 1.9-2 3.3-3.2 5.5-3.2 4 0 6 4.5 4 8C19 16.65 12 21 12 21z"/></svg>
+      <svg width="18" height="17" viewBox="0 0 24 22"><path fill="#F4A7A0" d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 4.5 6.5 4.5c2.2 0 3.6 1.2 5.5 3.2 1.9-2 3.3-3.2 5.5-3.2 4 0 6 4.5 4 8C19 16.65 12 21 12 21z"/></svg>
+    </div>
+    <p class="eyebrow">연애심리학 · 연애는 수학이다?</p>
+    <h1>오늘의 자가검사</h1>
+    <p class="muted">해 보고 싶은 검사를 골라 주세요. 1번부터 하면 강의 흐름과 맞아요.</p>
+  </div>
+  <button class="pick" id="goAttach">
+    <span class="num" style="background:var(--red)">1</span>
+    <span class="txt"><span class="ttl">나의 애착 좌표 찾기</span><span class="muted">10문항 · 약 2분</span></span>
+    <span class="done" id="doneAttach" hidden>완료</span>
+  </button>
+  <button class="pick" id="goTri">
+    <span class="num" style="background:var(--lav-ink)">2</span>
+    <span class="txt"><span class="ttl">사랑의 삼각형 척도</span><span class="muted">27문항 · 약 4분</span></span>
+    <span class="done" id="doneTri" hidden>완료</span>
+  </button>
+  <p class="muted">로그인이나 이름 입력이 없고, 응답은 이 휴대폰에만 남아요. 어디에도 전송되지 않습니다.</p>
+</section>
+
+<!-- ========== 애착: 문항 ========== -->
+<section id="aQuiz" hidden>
+  <button class="linkbtn" data-home>← 처음 화면</button>
+  <div class="head">
+    <p class="eyebrow">검사 1</p>
+    <h2>나의 애착 좌표 찾기</h2>
+    <p class="muted">ECR(Brennan 외, 1998)을 참고한 간이 애착 체크리스트</p>
+  </div>
+  <div class="note"><p>지금 또는 가장 최근의 연인 관계를 떠올리며 답해 주세요. 연애 경험이 없다면 가까운 사람과의 관계를 떠올려도 괜찮아요. 정답은 없습니다.</p>
+    <p class="muted">1 전혀 아니다 · 3 보통 · 5 매우 그렇다</p></div>
+  <div class="qs" id="aList"></div>
+  <div class="sticky"><button class="btn" id="aSubmit" disabled>결과 보기 (0/10)</button></div>
+</section>
+
+<!-- ========== 애착: 결과 ========== -->
+<section id="aResult" hidden>
+  <div class="head"><p class="eyebrow">검사 1 결과</p><h2>나의 애착 좌표</h2></div>
+  <div class="nums">
+    <div class="numbox"><span class="muted">불안 점수</span><b id="aAnx" style="color:var(--peach-ink)">0</b><span class="muted">5–25점</span></div>
+    <div class="numbox"><span class="muted">회피 점수</span><b id="aAvo" style="color:var(--lav-ink)">0</b><span class="muted">5–25점</span></div>
+  </div>
+  <div class="plot" id="aPlot"></div>
+  <p class="border" id="aBorder" hidden>경계선 근처에 있어요. 양쪽 특징이 섞여 있을 수 있으니, 칸보다 좌표 위치로 봐 주세요.</p>
+  <div class="card" id="aCard"></div>
+  <div class="btns">
+    <button class="btn" id="aNext">다음 검사: 사랑의 삼각형 척도 →</button>
+    <button class="btn ghost" id="aRedo">다시 하기</button>
+    <button class="btn ghost" data-home>처음 화면으로</button>
+  </div>
+  <div class="fine">
+    <p>이 검사는 진단 도구가 아니라 나의 관계 경향을 살펴보기 위한 강의용 체크리스트입니다. 애착은 만나는 사람과 관계 경험에 따라 달라질 수 있어요. 애착은 운명이 아니라, 사랑의 출발점입니다.</p>
+    <p>출처: Brennan, Clark, &amp; Shaver(1998); Bartholomew &amp; Horowitz(1991); Mikulincer &amp; Shaver, 『The New Psychology of Love』 13장</p>
+  </div>
+</section>
+
+<!-- ========== 삼각형: 안내 ========== -->
+<section id="tIntro" hidden>
+  <button class="linkbtn" data-home>← 처음 화면</button>
+  <div class="head">
+    <p class="eyebrow">검사 2 · Sternberg</p>
+    <h2>사랑의 삼각형 척도</h2>
+    <p class="muted">친밀감 · 열정 · 헌신 각 9문항</p>
+  </div>
+  <p>여러분이 사랑하거나 깊이 좋아하는 한 사람을 떠올린 뒤, 각 문장이 그 사람에 대한 내 마음을 잘 나타내는 정도를 1부터 9까지 숫자로 골라 주세요.</p>
+  <div class="note">
+    <p>1 전혀 그렇지 않다 · 5 보통이다 · 9 매우 그렇다</p>
+    <p class="muted">문장 속 '상대방'은 내가 떠올린 그 사람입니다. 지금 연인이 없다면 가장 최근의 연인이나 마음에 두고 있는 사람을 떠올려도 괜찮아요.</p>
+  </div>
+  <div class="btns">
+    <button class="btn" id="tStart">시작하기</button>
+    <button class="btn ghost" id="tResume" hidden>이어서 하기</button>
+  </div>
+</section>
+
+<!-- ========== 삼각형: 문항 ========== -->
+<section id="tQuiz" hidden>
+  <div class="progress"><span id="tCount">1 / 27</span><div class="bar"><i id="tBar"></i></div></div>
+  <p class="item" id="tItem"></p>
+  <div class="nine" id="tScale" role="group" aria-label="1점부터 9점"></div>
+  <div class="ends"><span>전혀 아니다</span><span>매우 그렇다</span></div>
+  <button class="linkbtn" id="tBack">이전 문항</button>
+</section>
+
+<!-- ========== 삼각형: 결과 ========== -->
+<section id="tResult" hidden>
+  <div class="head"><p class="eyebrow">검사 2 결과</p><h2>세 요소 점수</h2><p class="muted">각 요소 9문항 평균(1–9점) · 괄호는 총점(9–81점)</p></div>
+  <div class="scores" id="tScores"></div>
+  <div class="card" id="tCard" style="background:var(--lav)"></div>
+  <div class="head"><h3>스턴버그의 여덟 가지 사랑</h3></div>
+  <div class="types" id="tList"></div>
+  <div class="btns">
+    <button class="btn ghost" id="tRedo">다시 하기</button>
+    <button class="btn ghost" data-home>처음 화면으로</button>
+  </div>
+  <div class="fine"><p>각 요소 평균이 6.5점 이상이면 '높음'으로 보고 유형을 정했습니다. 교육용 참고 기준이며 진단이 아닙니다. 점수는 관계의 우열이 아니라 지금 관계의 모양을 보여 줍니다.</p>
+    <p>출처: Sternberg(1986, 1997), 사랑의 삼각형 이론 척도</p></div>
+</section>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const HEART = "M12 21s-7-4.35-9.5-8.5C.5 9 2.5 4.5 6.5 4.5c2.2 0 3.6 1.2 5.5 3.2 1.9-2 3.3-3.2 5.5-3.2 4 0 6 4.5 4 8C19 16.65 12 21 12 21z";
+function sget(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+function sset(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function sdel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+const SECTIONS = ["home","aQuiz","aResult","tIntro","tQuiz","tResult"];
+function show(id){
+  SECTIONS.forEach(s => $(s).hidden = (s!==id));
+  window.scrollTo(0,0);
+  if(id==="home") refreshHome();
+}
+document.querySelectorAll("[data-home]").forEach(b => b.addEventListener("click", () => show("home")));
+
+/* =================== 1. 애착 =================== */
+const A_ITEMS = [
+"나는 상대방이 나를 떠날까 봐 자주 걱정된다.",
+"나는 사람들과 너무 가까워지는 것이 불편하다.",
+"나는 상대방이 나만큼 나를 사랑하지 않을까 봐 불안하다.",
+"나는 누군가에게 내 깊은 속마음을 털어놓기 어렵다.",
+"상대가 연락이 없으면, 내가 뭘 잘못했나 싶어 전전긍긍한다.",
+"상대방이 나에게 너무 의지하려 하면 부담스럽다.",
+"나는 사랑받고 있다는 것을 자꾸 확인받고 싶다.",
+"나는 독립적인 것이 중요해서, 남에게 의존하는 게 싫다.",
+"연인이 나의 감정적 요구를 채워주지 못할까 봐 두렵다.",
+"나는 관계에 문제가 생기면 대화보다 혼자 있는 것을 택한다."
+];
+const A_TYPES = {
+  secure:{name:"안정형", arrows:"불안↓ 회피↓", quote:"그럴 수 있지", bg:"#FFE3DB", ink:"#E04445",
+    items:[["마음속 믿음","나는 사랑받을 만하고, 상대도 믿을 만하다"],
+           ["연애에서","가까이 있어도, 떨어져 있어도 편안하다. 연락이 늦으면 \"바쁜가 보다\" 하고 내 할 일을 한다"],
+           ["갈등에서","갈등을 이별의 신호로 여기지 않는다. 서운함을 말로 전하고, 타협하고, 용서한다"],
+           ["성장 포인트","내 기준을 상대에게 강요하지 않기. \"나는 괜찮은데 너는 왜?\" 대신 상대의 불안과 거리를 이해해 보기"]]},
+  anxious:{name:"불안·집착형", arrows:"불안↑ 회피↓", quote:"나 사랑해? 나만 봐", bg:"#FFF0DC", ink:"#E07A5F",
+    items:[["마음속 믿음","상대는 좋은 사람인데, 내가 부족해서 떠날지도 모른다"],
+           ["연애에서","답장 속도, 말투, 이모티콘 하나에도 민감하다. 확인받고 싶어서 자주 연락하고, 상대의 마음을 시험한다"],
+           ["갈등에서","감정이 빠르게 커진다. 상대가 물러나면 더 쫓아가고, 비난이 늘기 쉽다"],
+           ["성장 포인트","확인받기 전에 스스로 진정하기. 불안을 상대에게 맡기기 전에 내가 먼저 달래 보기"]]},
+  avoidant:{name:"회피형", arrows:"불안↓ 회피↑", quote:"혼자가 훨씬 편해", bg:"#EEE8FB", ink:"#8B6FD6",
+    items:[["마음속 믿음","나는 괜찮다. 남에게 기대면 실망한다. 믿을 건 나뿐이다"],
+           ["연애에서","처음엔 쿨해 보인다. 하지만 관계가 깊어지는 순간(고백, 미래 이야기, 상대가 힘들어할 때) 거리를 둔다"],
+           ["갈등에서","대화를 피하고 침묵하거나 자리를 뜬다. 심하면 잠수를 탄다"],
+           ["성장 포인트","작게 기대 보기. \"오늘 좀 힘들었어\" 한마디부터 시작하기"]]},
+  fearful:{name:"두려움형", arrows:"불안↑ 회피↑", quote:"사랑받고 싶은데, 다가오면 밀어내", bg:"#F1EFEF", ink:"#5E5E5E",
+    items:[["마음속 믿음","나도 부족하고, 상대도 믿을 수 없다"],
+           ["연애에서","가까워지고 싶은 마음과 상처받을까 두려운 마음이 함께 있다. 다가갔다가 갑자기 밀어낸다"],
+           ["갈등에서","매달리다가 갑자기 차단하는 등 반응이 극과 극을 오간다. 본인도 상대도 혼란스럽다"],
+           ["성장 포인트","내 패턴을 알아차리는 것부터. 반복되어 힘들다면 상담처럼 안전한 관계 안에서 연습해 보기"]]}
+};
+function aScore(ans){
+  const anx = [0,2,4,6,8].reduce((s,i)=>s+ans[i],0);
+  const avo = [1,3,5,7,9].reduce((s,i)=>s+ans[i],0);
+  const hiX = anx>=15, hiY = avo>=15;
+  const type = !hiX&&!hiY ? "secure" : hiX&&!hiY ? "anxious" : !hiX&&hiY ? "avoidant" : "fearful";
+  const border = (anx>=14&&anx<=16) || (avo>=14&&avo<=16);
+  return {anx, avo, type, border};
+}
+
+const A_KEY = "lp-attach-v1";
+let aAns = new Array(10).fill(0);
+
+$("aList").innerHTML = A_ITEMS.map((t,i) => `
+  <div class="q" id="aq${i}">
+    <p><span class="n">${i+1}.</span>${t}</p>
+    <div class="five" role="group" aria-label="${i+1}번 응답">
+      ${[1,2,3,4,5].map(v=>`<button type="button" id="a${i}v${v}" data-i="${i}" data-v="${v}" aria-label="${v}점">${v}</button>`).join("")}
+    </div>
+    <div class="ends"><span>전혀 아니다</span><span>매우 그렇다</span></div>
+  </div>`).join("");
+$("aList").addEventListener("click", e => {
+  const b = e.target.closest("button[data-i]"); if(!b) return;
+  aAns[+b.dataset.i] = +b.dataset.v; sset(A_KEY,{ans:aAns,done:false}); aPaint();
+});
+function aPaint(){
+  aAns.forEach((a,i) => {
+    for(let v=1;v<=5;v++) $(`a${i}v${v}`).classList.toggle("on", a===v);
+    $("aq"+i).classList.toggle("ok", a>0);
+  });
+  const n = aAns.filter(a=>a>0).length;
+  $("aSubmit").disabled = n<10;
+  $("aSubmit").textContent = n<10 ? `결과 보기 (${n}/10)` : "결과 보기";
+}
+
+function aPlotSVG(anx, avo, typeKey){
+  const L=46,R=306,T=14,B=274,S=(R-L)/20;
+  const X=v=>L+(v-5)*S, Y=v=>B-(v-5)*S, cx=X(15), cy=Y(15);
+  // 유형 이름은 각 칸의 바깥 모서리에 두어 가운데 근처 하트와 겹치지 않게 함
+  const q=(x,y,w,h,k,line2)=>{const t=A_TYPES[k]; const me=k===typeKey;
+    const left = x===L, top = y===T;
+    const tx = left ? x+8 : x+w-8, anc = left ? "start" : "end";
+    const lines = line2 ? line2 : ['"'+t.quote+'"'];
+    const y0 = top ? y+22 : y+h-14-15*lines.length;
+    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${t.bg}"/>
+    <text x="${tx}" y="${y0}" text-anchor="${anc}" font-family="Jua, sans-serif" font-size="${me?17:15}" fill="${t.ink}">${t.name}</text>
+    ${lines.map((s,j)=>`<text x="${tx}" y="${y0+17+15*j}" text-anchor="${anc}" font-family="Gowun Dodum, sans-serif" font-size="11" fill="${t.ink}">${s}</text>`).join("")}`;};
+  const hx=X(anx), hy=Y(avo);
+  return `<svg viewBox="0 0 320 318" role="img" aria-label="불안 ${anx}점, 회피 ${avo}점 위치">
+    ${q(L,cy,cx-L,B-cy,"secure")}
+    ${q(cx,cy,R-cx,B-cy,"anxious")}
+    ${q(L,T,cx-L,cy-T,"avoidant")}
+    ${q(cx,T,R-cx,cy-T,"fearful",['"사랑받고 싶은데,','다가오면 밀어내"'])}
+    <rect x="${L}" y="${T}" width="${R-L}" height="${B-T}" fill="none" stroke="#E9CFC9" stroke-width="1.5"/>
+    <line x1="${cx}" y1="${T}" x2="${cx}" y2="${B}" stroke="#C9A9A3" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <line x1="${L}" y1="${cy}" x2="${R}" y2="${cy}" stroke="#C9A9A3" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <g font-family="Gowun Dodum, sans-serif" font-size="11" fill="#8A7473">
+      <text x="${L}" y="${B+16}" text-anchor="middle">5</text><text x="${cx}" y="${B+16}" text-anchor="middle">15</text><text x="${R}" y="${B+16}" text-anchor="middle">25</text>
+      <text x="${L-6}" y="${B+4}" text-anchor="end">5</text><text x="${L-6}" y="${cy+4}" text-anchor="end">15</text><text x="${L-6}" y="${T+8}" text-anchor="end">25</text>
+    </g>
+    <text x="${(L+R)/2}" y="${B+36}" text-anchor="middle" font-family="Jua, sans-serif" font-size="13" fill="#E07A5F">불안 (버림받을까 걱정) →</text>
+    <text transform="translate(14 ${(T+B)/2}) rotate(-90)" text-anchor="middle" font-family="Jua, sans-serif" font-size="13" fill="#8B6FD6">회피 (가까워지면 불편) →</text>
+    <g transform="translate(${hx-13} ${hy-14}) scale(1.1)">
+      <path d="${HEART}" fill="#E04445" stroke="#fff" stroke-width="2.2"/>
+    </g>
+  </svg>`;
+}
+
+function aShowResult(){
+  const r = aScore(aAns), t = A_TYPES[r.type];
+  $("aAnx").textContent = r.anx; $("aAvo").textContent = r.avo;
+  $("aPlot").innerHTML = aPlotSVG(r.anx, r.avo, r.type);
+  $("aBorder").hidden = !r.border;
+  const c = $("aCard"); c.style.background = t.bg;
+  c.innerHTML = `<p class="eyebrow" style="color:${t.ink}">나의 유형 · ${t.arrows}</p>
+    <p class="tname" style="color:${t.ink}">${t.name}</p>
+    <p class="quote" style="color:${t.ink}">"${t.quote}"</p>
+    <dl>${t.items.map(([k,v])=>`<div><dt style="color:${t.ink}">${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`;
+  sset(A_KEY,{ans:aAns,done:true});
+  show("aResult");
+}
+$("aSubmit").addEventListener("click", () => { if(aAns.every(a=>a>0)) aShowResult(); });
+$("aRedo").addEventListener("click", () => { aAns = new Array(10).fill(0); sdel(A_KEY); aPaint(); show("aQuiz"); });
+$("aNext").addEventListener("click", () => openTri());
+$("goAttach").addEventListener("click", () => {
+  const s = sget(A_KEY);
+  if(s && Array.isArray(s.ans) && s.ans.length===10){ aAns = s.ans; aPaint(); if(s.done && aAns.every(a=>a>0)){ aShowResult(); return; } }
+  show("aQuiz");
+});
+
+/* =================== 2. 사랑의 삼각형 =================== */
+const T_ITEMS = [
+"나는 상대방의 행복을 적극적으로 지원한다.",
+"나는 상대방과 따뜻한 관계를 맺고 있다.",
+"나는 힘들 때 상대방에게 의지할 수 있다.",
+"상대방은 힘들 때 나에게 의지할 수 있다.",
+"나는 상대방으로부터 상당한 정서적 지지를 받고 있다.",
+"나는 상대방에게 상당한 정서적 지지를 주고 있다.",
+"나는 상대방과 말이 잘 통한다.",
+"나는 상대방과 가깝다고 느낀다.",
+"나는 상대방에게 나의 속마음을 털어놓기가 편하다.",
+"상대방을 보기만 해도 나는 설렌다.",
+"나는 하루에도 자주 상대방에 관해 생각한다.",
+"상대방과의 관계는 매우 로맨틱(낭만적)하다.",
+"나는 상대방이 매우 매력적이라고 느낀다.",
+"나는 상대방에게 깊이 빠져 있다고 느낀다.",
+"나는 상대방만큼 나를 행복하게 만들 다른 사람을 상상할 수 없다.",
+"상대방과 나의 관계는 열정적이다.",
+"나는 상대방과의 신체적 접촉을 특히 좋아한다.",
+"상대방과의 관계에는 신기하게 끌리는 무언가가 있다.",
+"나는 상대방과의 관계를 유지하는 데 헌신한다.",
+"나는 상대방과의 관계가 안정적이라는 확신이 있다.",
+"나는 상대방과의 사랑이 남은 인생 동안 계속되리라 기대한다.",
+"더 좋은 조건의 사람이 나타나도 나는 상대방을 떠나지 않을 것이다.",
+"나는 상대방에 대한 나의 사랑을 확신한다.",
+"나는 항상 상대방에 대해 강한 책임감을 느낄 것이다.",
+"나는 어떤 어려움이나 방해가 있어도 상대방과의 관계를 지켜낼 것이다.",
+"나는 상대방을 선택한 것을 후회하지 않는다.",
+"나는 상대방과의 관계가 영원할 것이라고 본다."
+];
+const T_CUT = 6.5;
+const COMP = [
+  {key:"I", name:"친밀감", color:"#E07A5F", from:0},
+  {key:"P", name:"열정",   color:"#E04445", from:9},
+  {key:"C", name:"헌신",   color:"#8B6FD6", from:18}
+];
+const T_TYPES = {
+  "":    ["사랑이 아님", "세 요소 모두 낮은 상태입니다. 스쳐 지나가는 대부분의 관계가 여기에 해당합니다."],
+  "I":   ["좋아함", "가깝고 편안하지만 설렘이나 장기적 약속은 아직 두드러지지 않는, 우정에 가까운 마음입니다."],
+  "P":   ["도취적 사랑", "강한 끌림과 설렘이 중심인 '첫눈에 반한' 사랑입니다. 서로를 깊이 아는 과정과 약속이 더해질 때 관계가 단단해집니다."],
+  "C":   ["공허한 사랑", "관계를 지키려는 결심은 강하지만 친밀감과 열정은 낮은 상태입니다. 오래된 관계에서 나타나기도 하고, 결심이 먼저 선 관계의 출발점이 되기도 합니다."],
+  "IP":  ["낭만적 사랑", "정서적으로 가깝고 끌림도 큰 사랑입니다. 함께할 미래에 대한 약속이 더해지면 완전한 사랑으로 나아갑니다."],
+  "IC":  ["동반자적 사랑", "깊은 친밀감과 서로에 대한 헌신이 중심인, 오래 함께한 부부나 단짝 같은 사랑입니다. 설렘을 새로 일구는 경험이 관계에 활력을 줍니다."],
+  "PC":  ["얼빠진 사랑", "뜨거운 끌림 위에 빠르게 약속이 세워졌지만 서로를 깊이 아는 친밀감은 아직 부족한 상태입니다. 대화와 이해를 쌓는 시간이 필요합니다."],
+  "IPC": ["완전한 사랑", "친밀감·열정·헌신이 모두 높은 상태입니다. 스턴버그는 이 상태에 이르기보다 유지하기가 더 어렵다고 보았습니다."]
+};
+const T_ORDER = ["","I","P","C","IP","IC","PC","IPC"];
+const T_KEY = "lp-triangle-v2";
+let tAns = new Array(27).fill(0), tIdx = 0, tBusy = false;
+
+for(let v=1; v<=9; v++){
+  const b = document.createElement("button");
+  b.type="button"; b.textContent=v; b.id="t"+v; b.setAttribute("aria-label", v+"점");
+  b.addEventListener("click", () => tPick(v));
+  $("tScale").appendChild(b);
+}
+function tRender(){
+  $("tCount").textContent = (tIdx+1) + " / 27";
+  $("tBar").style.width = (tIdx/27*100) + "%";
+  $("tItem").textContent = T_ITEMS[tIdx];
+  for(let v=1; v<=9; v++) $("t"+v).classList.toggle("on", tAns[tIdx]===v);
+  $("tBack").disabled = tIdx===0;
+}
+function tPick(v){
+  if(tBusy) return;
+  tAns[tIdx] = v; sset(T_KEY, tAns);
+  for(let k=1;k<=9;k++) $("t"+k).classList.toggle("on", k===v);
+  tBusy = true;
+  setTimeout(() => {
+    tBusy = false;
+    if(tAns.every(a=>a>0) && tIdx===26) { tShowResult(); return; }
+    if(tIdx < 26){ tIdx++; tRender(); }
+    else { tIdx = tAns.indexOf(0); tRender(); }
+  }, 180);
+}
+function tScore(ans){
+  const means = COMP.map(c => ans.slice(c.from, c.from+9).reduce((a,b)=>a+b,0)/9);
+  const code = COMP.filter((c,i) => means[i] >= T_CUT).map(c => c.key).join("");
+  return {means, code};
+}
+function tShowResult(){
+  const {means, code} = tScore(tAns), t = T_TYPES[code];
+  $("tScores").innerHTML = COMP.map((c,i) => `
+    <div class="score"><span style="text-align:left;color:${c.color}">${c.name}</span>
+      <div class="track"><div class="fill" style="width:${(means[i]-1)/8*100}%;background:${c.color}"></div></div>
+      <span>${means[i].toFixed(1)}<small class="muted" style="display:block;font-family:var(--font-body);font-size:.72rem;line-height:1">(${Math.round(means[i]*9)})</small></span></div>`).join("");
+  const strongest = COMP[means.indexOf(Math.max(...means))].name;
+  $("tCard").innerHTML = `
+    <p class="eyebrow" style="color:var(--lav-ink)">가장 가까운 유형</p>
+    <p class="tname" style="color:var(--lav-ink)">${t[0]}</p>
+    <div class="chips">${COMP.map((c,i)=>{const hi=means[i]>=T_CUT;return `<span class="chip" style="${hi?'background:'+c.color+';color:#fff':''}">${c.name} ${hi?'높음':'낮음'}</span>`}).join("")}</div>
+    <p>${t[1]}</p>
+    <p class="muted">세 요소 가운데 지금 가장 큰 것은 <b>${strongest}</b>입니다.</p>`;
+  $("tList").innerHTML = T_ORDER.map(k => {
+    const comps = k ? k.split("").map(x => COMP.find(c=>c.key===x).name).join(" + ") : "세 요소 모두 낮음";
+    return `<div class="${k===code?'me':''}"><span>${k===code?'♥ ':''}${T_TYPES[k][0]}</span><span class="${k===code?'':'muted'}">${comps}</span></div>`;
+  }).join("");
+  show("tResult");
+}
+function openTri(){
+  const saved = sget(T_KEY);
+  if(Array.isArray(saved) && saved.length===27 && saved.some(a=>a>0)){
+    tAns = saved; $("tResume").hidden = false;
+    $("tResume").textContent = tAns.every(a=>a>0) ? "내 결과 다시 보기" : `이어서 하기 (${tAns.filter(a=>a>0).length}/27)`;
+  } else $("tResume").hidden = true;
+  show("tIntro");
+}
+$("goTri").addEventListener("click", openTri);
+$("tStart").addEventListener("click", () => { tAns = new Array(27).fill(0); tIdx = 0; sdel(T_KEY); tRender(); show("tQuiz"); });
+$("tResume").addEventListener("click", () => { if(tAns.every(a=>a>0)){ tShowResult(); return; } tIdx = tAns.indexOf(0); tRender(); show("tQuiz"); });
+$("tBack").addEventListener("click", () => { if(tIdx>0){ tIdx--; tRender(); } });
+$("tRedo").addEventListener("click", () => { sdel(T_KEY); tAns = new Array(27).fill(0); tIdx = 0; tRender(); show("tQuiz"); });
+
+/* =================== 처음 화면 =================== */
+function refreshHome(){
+  const a = sget(A_KEY); $("doneAttach").hidden = !(a && a.done);
+  const t = sget(T_KEY); $("doneTri").hidden = !(Array.isArray(t) && t.length===27 && t.every(x=>x>0));
+}
+aPaint();
+// 검사별 바로가기: 주소 끝 #attachment 또는 #triangle
+function route(){ const h = location.hash.slice(1);
+  if(h==="attachment") $("goAttach").click(); else if(h==="triangle") openTri(); else show("home"); }
+window.addEventListener("hashchange", route);
+route();
+</script>
+
+</body>
+</html>
